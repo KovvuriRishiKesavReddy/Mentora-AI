@@ -1,0 +1,131 @@
+test_auth_header_and_error_shape (tests.test_api.TestApi.test_auth_header_and_error_shape) ... ok
+test_cors_not_wildcard (tests.test_api.TestApi.test_cors_not_wildcard) ... ok
+test_session_chat_refresh_and_isolation (tests.test_api.TestApi.test_session_chat_refresh_and_isolation) ... ok
+test_study_endpoints (tests.test_api.TestApi.test_study_endpoints) ... ok
+test_upload_rejects_bad_type_and_content (tests.test_api.TestApi.test_upload_rejects_bad_type_and_content) ... ok
+test_corrupt_webm_clear_error_and_cleanup (tests.test_audio_security.TestAudio.test_corrupt_webm_clear_error_and_cleanup) ... skipped 'ffmpeg not installed'
+test_declared_mime_is_not_trusted (tests.test_audio_security.TestAudio.test_declared_mime_is_not_trusted) ... ok
+test_empty_unsupported_oversize_long_short (tests.test_audio_security.TestAudio.test_empty_unsupported_oversize_long_short) ... ok
+test_real_webm_opus_recording (tests.test_audio_security.TestAudio.test_real_webm_opus_recording) ... skipped 'ffmpeg not installed'
+test_transcription_only_when_enabled (tests.test_audio_security.TestAudio.test_transcription_only_when_enabled) ... ok
+test_valid_wav_mono_and_stereo_44k (tests.test_audio_security.TestAudio.test_valid_wav_mono_and_stereo_44k) ... ok
+test_webm_without_ffmpeg_gives_actionable_503 (tests.test_audio_security.TestAudio.test_webm_without_ffmpeg_gives_actionable_503) ... ok
+test_config_is_not_wildcard_and_no_secrets_shipped (tests.test_audio_security.TestSecurity.test_config_is_not_wildcard_and_no_secrets_shipped) ... ok
+test_content_validation (tests.test_audio_security.TestSecurity.test_content_validation) ... ok
+test_filename_sanitising (tests.test_audio_security.TestSecurity.test_filename_sanitising) ... ok
+test_owner_validation_and_rate_limit (tests.test_audio_security.TestSecurity.test_owner_validation_and_rate_limit) ... ok
+test_bare_confusion_is_about_the_topic_not_the_last_example (tests.test_conversation.TestChatFlow.test_bare_confusion_is_about_the_topic_not_the_last_example) ... ok
+test_broad_request_sends_all_six_types_to_the_model (tests.test_conversation.TestChatFlow.test_broad_request_sends_all_six_types_to_the_model) ... ok
+test_confusion_after_an_answer_switches_to_short_clarification_mode (tests.test_conversation.TestChatFlow.test_confusion_after_an_answer_switches_to_short_clarification_mode) ... ok
+test_explicit_topic_change_is_respected (tests.test_conversation.TestChatFlow.test_explicit_topic_change_is_respected) ... ok
+test_failed_llm_call_persists_nothing (tests.test_conversation.TestChatFlow.test_failed_llm_call_persists_nothing) ... ok
+test_five_step_follow_up_sequence_keeps_context (tests.test_conversation.TestChatFlow.test_five_step_follow_up_sequence_keeps_context) ... ok
+test_followup_works_without_llm_rewriter_via_heuristic_anchor (tests.test_conversation.TestChatFlow.test_followup_works_without_llm_rewriter_via_heuristic_anchor) ... ok
+test_foreign_or_unknown_session_is_not_found (tests.test_conversation.TestChatFlow.test_foreign_or_unknown_session_is_not_found) ... ok
+test_history_is_ordered_and_bounded (tests.test_conversation.TestChatFlow.test_history_is_ordered_and_bounded) ... ok
+test_history_survives_restart (tests.test_conversation.TestChatFlow.test_history_survives_restart) ... ok
+test_new_session_does_not_inherit_private_history (tests.test_conversation.TestChatFlow.test_new_session_does_not_inherit_private_history) ... ok
+test_ungrounded_answer_prompt_has_no_fixed_opener_and_is_flagged (tests.test_conversation.TestChatFlow.test_ungrounded_answer_prompt_has_no_fixed_opener_and_is_flagged) ... ok
+test_near_tie_semantic_result_falls_back_to_neutral (tests.test_conversation.TestMoodNearTie.test_near_tie_semantic_result_falls_back_to_neutral) ... ok
+test_grounding_status_text_matches_evidence (tests.test_conversation.TestPromptQuality.test_grounding_status_text_matches_evidence) ... ok
+test_mood_changes_presentation_but_not_grounding_rules (tests.test_conversation.TestPromptQuality.test_mood_changes_presentation_but_not_grounding_rules) ... ok
+test_removed_contradictory_or_fact_inventing_instructions (tests.test_conversation.TestPromptQuality.test_removed_contradictory_or_fact_inventing_instructions) ... ok
+test_broad_detection (tests.test_conversation.TestQueryUnderstanding.test_broad_detection) ... ok
+test_confusion_vs_plain_questions (tests.test_conversation.TestQueryUnderstanding.test_confusion_vs_plain_questions) ... ok
+test_followup_detection (tests.test_conversation.TestQueryUnderstanding.test_followup_detection) ... ok
+test_mood_keywords_do_not_misfire (tests.test_conversation.TestQueryUnderstanding.test_mood_keywords_do_not_misfire) ... ok
+test_topic_extraction_is_not_first_six_words (tests.test_conversation.TestQueryUnderstanding.test_topic_extraction_is_not_first_six_words) ... ok
+test_dataset_shape (tests.test_eval_dataset.TestEvalDataset.test_dataset_shape) ... ok
+test_every_expected_section_and_keyword_exists_in_the_notes (tests.test_eval_dataset.TestEvalDataset.test_every_expected_section_and_keyword_exists_in_the_notes) ... ok
+test_defaults_are_openai_oss_models (tests.test_llm.TestDefaults.test_defaults_are_openai_oss_models) ... ok
+test_reasoning_options_only_for_gpt_oss (tests.test_llm.TestDefaults.test_reasoning_options_only_for_gpt_oss) ... ok
+test_auth_error_not_retried_and_key_redacted (tests.test_llm.TestModelFallback.test_auth_error_not_retried_and_key_redacted) ... ok
+test_auto_discovery_when_configured_models_retired (tests.test_llm.TestModelFallback.test_auto_discovery_when_configured_models_retired) ... ok
+test_clear_error_when_nothing_works (tests.test_llm.TestModelFallback.test_clear_error_when_nothing_works) ... ok
+test_fallback_model_used (tests.test_llm.TestModelFallback.test_fallback_model_used) ... ok
+test_policy_table (tests.test_quiz.TestMastery.test_policy_table) ... ok
+test_all_correct_is_not_weak (tests.test_quiz.TestQuiz.test_all_correct_is_not_weak) ... ok
+test_chat_questions_and_mood_do_not_mark_weak (tests.test_quiz.TestQuiz.test_chat_questions_and_mood_do_not_mark_weak) ... ok
+test_confusion_is_a_separate_signal (tests.test_quiz.TestQuiz.test_confusion_is_a_separate_signal) ... ok
+test_duplicate_and_concurrent_submissions_count_once (tests.test_quiz.TestQuiz.test_duplicate_and_concurrent_submissions_count_once) ... ok
+test_generation_hides_answers_and_stores_topic (tests.test_quiz.TestQuiz.test_generation_hides_answers_and_stores_topic) ... ok
+test_malformed_mcq_dropped (tests.test_quiz.TestQuiz.test_malformed_mcq_dropped) ... ok
+test_multi_topic_quiz_history_and_persistence (tests.test_quiz.TestQuiz.test_multi_topic_quiz_history_and_persistence) ... ok
+test_ownership_and_validation (tests.test_quiz.TestQuiz.test_ownership_and_validation) ... ok
+test_short_answer_grading_and_grader_outage (tests.test_quiz.TestQuiz.test_short_answer_grading_and_grader_outage) ... ok
+test_wrong_answers_flag_revision_then_weak (tests.test_quiz.TestQuiz.test_wrong_answers_flag_revision_then_weak) ... ok
+test_chunker_keeps_section_structure_and_never_drops_text (tests.test_rag.TestIngestion.test_chunker_keeps_section_structure_and_never_drops_text) ... ok
+test_docx_headings_tables_and_chunk_metadata (tests.test_rag.TestIngestion.test_docx_headings_tables_and_chunk_metadata) ... ok
+test_empty_text_file_rejected (tests.test_rag.TestIngestion.test_empty_text_file_rejected) ... ok
+test_pdf_not_truncated_per_page (tests.test_rag.TestIngestion.test_pdf_not_truncated_per_page) ... ok
+test_pdf_parse_roundtrip (tests.test_rag.TestIngestion.test_pdf_parse_roundtrip) ... skipped 'reportlab/pypdf not installed'
+test_delete_removes_chunks_row_and_file (tests.test_rag.TestMultiDocumentAndDuplicates.test_delete_removes_chunks_row_and_file) ... ok
+test_documents_are_isolated_between_owners (tests.test_rag.TestMultiDocumentAndDuplicates.test_documents_are_isolated_between_owners) ... ok
+test_replace_same_filename_removes_old_chunks (tests.test_rag.TestMultiDocumentAndDuplicates.test_replace_same_filename_removes_old_chunks) ... ok
+test_reupload_policy (tests.test_rag.TestMultiDocumentAndDuplicates.test_reupload_policy) ... ok
+test_two_similar_documents_use_the_correct_source (tests.test_rag.TestMultiDocumentAndDuplicates.test_two_similar_documents_use_the_correct_source) ... ok
+test_document_registry_survives_reconnect (tests.test_rag.TestRestart.test_document_registry_survives_reconnect) ... ok
+test_vector_store_wiped_then_reindexed_from_stored_files (tests.test_rag.TestRestart.test_vector_store_wiped_then_reindexed_from_stored_files) ... ok
+test_absent_topic_is_not_grounded (tests.test_rag.TestRetrieval.test_absent_topic_is_not_grounded) ... ok
+test_broad_request_returns_all_six_types (tests.test_rag.TestRetrieval.test_broad_request_returns_all_six_types) ... ok
+test_budget_is_respected_and_truncation_reported (tests.test_rag.TestRetrieval.test_budget_is_respected_and_truncation_reported) ... ok
+test_detail_from_later_part_of_document (tests.test_rag.TestRetrieval.test_detail_from_later_part_of_document) ... ok
+test_non_broad_question_still_gets_complete_small_section (tests.test_rag.TestRetrieval.test_non_broad_question_still_gets_complete_small_section) ... ok
+test_similarity_is_true_cosine_not_half_distance (tests.test_rag.TestRetrieval.test_similarity_is_true_cosine_not_half_distance) ... ok
+test_sources_carry_file_heading_and_boundaries (tests.test_rag.TestRetrieval.test_sources_carry_file_heading_and_boundaries) ... ok
+test_explicit_difficulty_wins (tests.test_study.TestAdaptiveQuiz.test_explicit_difficulty_wins) ... ok
+test_new_topic_is_medium_and_explains_why (tests.test_study.TestAdaptiveQuiz.test_new_topic_is_medium_and_explains_why) ... ok
+test_weak_topic_gets_easy_and_mastered_gets_hard (tests.test_study.TestAdaptiveQuiz.test_weak_topic_gets_easy_and_mastered_gets_hard) ... ok
+test_wrong_answer_returns_note_for_each_wrong_option_but_never_the_correct_one (tests.test_study.TestAdaptiveQuiz.test_wrong_answer_returns_note_for_each_wrong_option_but_never_the_correct_one) ... ok
+test_absent_topic_and_bad_requests (tests.test_study.TestFlashcards.test_absent_topic_and_bad_requests) ... ok
+test_generate_from_topic_and_from_document (tests.test_study.TestFlashcards.test_generate_from_topic_and_from_document) ... ok
+test_parse_handles_noise_duplicates_and_bad_items (tests.test_study.TestFlashcards.test_parse_handles_noise_duplicates_and_bad_items) ... ok
+test_unparseable_model_output_is_an_error_not_empty_success (tests.test_study.TestFlashcards.test_unparseable_model_output_is_an_error_not_empty_success) ... ok
+test_outline_lists_all_eleven_chapters_in_order_with_sections (tests.test_study.TestOutlineAndPassage.test_outline_lists_all_eleven_chapters_in_order_with_sections) ... ok
+test_passage_and_outline_are_owner_scoped (tests.test_study.TestOutlineAndPassage.test_passage_and_outline_are_owner_scoped) ... ok
+test_passage_returns_the_exact_section_text (tests.test_study.TestOutlineAndPassage.test_passage_returns_the_exact_section_text) ... ok
+test_unknown_heading_is_404 (tests.test_study.TestOutlineAndPassage.test_unknown_heading_is_404) ... ok
+test_empty_plan_says_so (tests.test_study.TestRevisionPlan.test_empty_plan_says_so) ... ok
+test_freshly_quizzed_weak_topic_is_not_due_yet (tests.test_study.TestRevisionPlan.test_freshly_quizzed_weak_topic_is_not_due_yet) ... ok
+test_lowest_mastery_comes_first (tests.test_study.TestRevisionPlan.test_lowest_mastery_comes_first) ... ok
+test_plan_is_owner_scoped (tests.test_study.TestRevisionPlan.test_plan_is_owner_scoped) ... ok
+test_repeated_confusion_without_quiz_is_planned (tests.test_study.TestRevisionPlan.test_repeated_confusion_without_quiz_is_planned) ... ok
+test_weak_topic_due_after_one_day_mastered_waits_a_week (tests.test_study.TestRevisionPlan.test_weak_topic_due_after_one_day_mastered_waits_a_week) ... ok
+test_call_count_is_bounded (tests.test_study.TestSummary.test_call_count_is_bounded) ... ok
+test_deleting_the_document_removes_its_summary (tests.test_study.TestSummary.test_deleting_the_document_removes_its_summary) ... ok
+test_every_chapter_is_summarised_and_every_section_text_is_sent_to_the_model (tests.test_study.TestSummary.test_every_chapter_is_summarised_and_every_section_text_is_sent_to_the_model) ... ok
+test_failure_midway_falls_back_to_notes_text_and_is_not_cached (tests.test_study.TestSummary.test_failure_midway_falls_back_to_notes_text_and_is_not_cached) ... ok
+test_model_down_from_the_start_fails_clearly_and_caches_nothing (tests.test_study.TestSummary.test_model_down_from_the_start_fails_clearly_and_caches_nothing) ... ok
+test_second_request_uses_cache_and_makes_no_model_calls (tests.test_study.TestSummary.test_second_request_uses_cache_and_makes_no_model_calls) ... ok
+test_every_mood_has_a_strategy_and_bored_gets_a_challenge_prompt (tests.test_study.TestTeachingStrategy.test_every_mood_has_a_strategy_and_bored_gets_a_challenge_prompt) ... ok
+
+----------------------------------------------------------------------
+Ran 100 tests in 74.468s
+
+OK (skipped=3)
+[mood] semantic embedder unavailable - keyword-only mood detection
+[voice] ok mime=audio/webm sniffed=wav bytes=48044 duration=1.5s decoder=builtin
+[voice] rejected mime=audio/webm bytes=0 reason=empty_audio
+[voice] rejected mime=audio/x-foo bytes=30 reason=unsupported_audio
+[voice] rejected mime=audio/wav bytes=32044 reason=audio_too_large
+[voice] rejected mime=audio/wav bytes=48044 reason=audio_too_long
+[voice] rejected mime=audio/wav bytes=3244 reason=too_short
+[voice] rejected mime=audio/wav bytes=60 reason=too_short
+[voice] ok mime=audio/wav sniffed=wav bytes=48044 duration=1.5s decoder=builtin
+[voice] ok mime=audio/wav sniffed=wav bytes=48044 duration=1.5s decoder=builtin
+[voice] transcription failed: RuntimeError
+[voice] ok mime=audio/wav sniffed=wav bytes=48044 duration=1.5s decoder=builtin
+[voice] ok mime=audio/wav sniffed=wav bytes=38444 duration=1.2s decoder=builtin
+[voice] ok mime=audio/wav sniffed=wav bytes=211724 duration=1.2s decoder=builtin
+[voice] rejected mime=audio/webm bytes=104 reason=decoder_missing
+[llm] model=openai/gpt-oss-120b failed: auth | 401 invalid api key gsk_***
+[llm] model=openai/gpt-oss-120b failed: model | Error code: 404 - model_not_found: The model `openai/gpt-oss-120b` does not exist
+[llm] model=openai/gpt-oss-20b failed: model | Error code: 404 - model_not_found: The model `openai/gpt-oss-20b` does not exist
+[llm] models available to this key (chat): ['llama-9-new', 'other-model']
+[llm] answered with fallback model llama-9-new
+[llm] model=openai/gpt-oss-120b failed: model | Error code: 404 - model_not_found: The model `openai/gpt-oss-120b` does not exist
+[llm] model=openai/gpt-oss-20b failed: model | Error code: 404 - model_not_found: The model `openai/gpt-oss-20b` does not exist
+[llm] models available to this key (chat): ['llama-x']
+[llm] model=llama-x failed: model | Error code: 404 - model_not_found: The model `llama-x` does not exist
+[llm] model=openai/gpt-oss-120b failed: model | Error code: 404 - model_not_found: The model `openai/gpt-oss-120b` does not exist
+[llm] answered with fallback model openai/gpt-oss-20b

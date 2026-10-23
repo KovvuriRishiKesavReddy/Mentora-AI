@@ -1,0 +1,489 @@
+{
+ "notes_hint": "OS Complete notes.docx",
+ "direct": [
+  {
+   "id": "Q01",
+   "question": "What are the core functions of an operating system?",
+   "section": "Core Functions",
+   "keywords": [
+    "Memory Management",
+    "process"
+   ]
+  },
+  {
+   "id": "Q02",
+   "question": "Explain batch operating systems.",
+   "section": "Types of Operating Systems",
+   "keywords": [
+    "Batch",
+    "batches"
+   ]
+  },
+  {
+   "id": "Q03",
+   "question": "What is a monolithic kernel?",
+   "section": "Monolithic Kernel",
+   "keywords": [
+    "single",
+    "kernel"
+   ]
+  },
+  {
+   "id": "Q04",
+   "question": "How does a microkernel work?",
+   "section": "Microkernel",
+   "keywords": [
+    "user space",
+    "non-essential"
+   ]
+  },
+  {
+   "id": "Q05",
+   "question": "What is the layered structure of an operating system?",
+   "section": "Layered Structure",
+   "keywords": [
+    "Layer 0",
+    "hardware"
+   ]
+  },
+  {
+   "id": "Q06",
+   "question": "What is a hybrid kernel?",
+   "section": "Hybrid Kernel",
+   "keywords": [
+    "monolithic",
+    "microkernel"
+   ]
+  },
+  {
+   "id": "Q07",
+   "question": "What is an exokernel?",
+   "section": "Exokernel",
+   "keywords": [
+    "MIT",
+    "protection"
+   ]
+  },
+  {
+   "id": "Q08",
+   "question": "What is a virtual machine?",
+   "section": "Virtual Machines",
+   "keywords": [
+    "isolated",
+    "illusion"
+   ]
+  },
+  {
+   "id": "Q09",
+   "question": "What is a process?",
+   "section": "Processes and Threads",
+   "keywords": [
+    "program in execution",
+    "address space"
+   ]
+  },
+  {
+   "id": "Q10",
+   "question": "What are the states of a process?",
+   "section": "Process States",
+   "keywords": [
+    "New",
+    "Ready"
+   ]
+  },
+  {
+   "id": "Q11",
+   "question": "What does a process control block contain?",
+   "section": "Process Control Block",
+   "keywords": [
+    "Process Control Block",
+    "task control block"
+   ]
+  },
+  {
+   "id": "Q12",
+   "question": "What happens during a context switch?",
+   "section": "Context Switching",
+   "keywords": [
+    "state",
+    "CPU"
+   ]
+  },
+  {
+   "id": "Q13",
+   "question": "What are the CPU scheduling criteria?",
+   "section": "Scheduling Criteria",
+   "keywords": [
+    "CPU Utilization",
+    "Throughput"
+   ]
+  },
+  {
+   "id": "Q14",
+   "question": "What is FCFS scheduling?",
+   "section": "First Come First Served",
+   "keywords": [
+    "non-preemptive",
+    "arrival time"
+   ]
+  },
+  {
+   "id": "Q15",
+   "question": "What is the convoy effect?",
+   "section": "First Come First Served",
+   "keywords": [
+    "convoy"
+   ]
+  },
+  {
+   "id": "Q16",
+   "question": "Explain SJF and SRTF scheduling.",
+   "section": "Shortest Job First",
+   "keywords": [
+    "preemptive",
+    "burst"
+   ]
+  },
+  {
+   "id": "Q17",
+   "question": "How does Round Robin scheduling work?",
+   "section": "Round Robin",
+   "keywords": [
+    "time quantum",
+    "ready queue"
+   ]
+  },
+  {
+   "id": "Q18",
+   "question": "What is priority based scheduling?",
+   "section": "Priority-Based",
+   "keywords": [
+    "priority",
+    "preemptive"
+   ]
+  },
+  {
+   "id": "Q19",
+   "question": "What is the difference between MLQ and MLFQ?",
+   "section": "Multilevel Queue",
+   "keywords": [
+    "queues",
+    "scheduling algorithm"
+   ]
+  },
+  {
+   "id": "Q20",
+   "question": "What is the critical section problem?",
+   "section": "The Critical Section Problem",
+   "keywords": [
+    "critical section",
+    "shared"
+   ]
+  },
+  {
+   "id": "Q21",
+   "question": "What is a semaphore?",
+   "section": "Synchronization Tools",
+   "keywords": [
+    "wait()",
+    "signal()"
+   ]
+  },
+  {
+   "id": "Q22",
+   "question": "Explain the producer consumer bounded buffer problem.",
+   "section": "Classical Synchronization Problems",
+   "keywords": [
+    "Bounded-Buffer",
+    "Producer"
+   ]
+  },
+  {
+   "id": "Q23",
+   "question": "What are the four necessary conditions for deadlock?",
+   "section": "Necessary Conditions for Deadlock",
+   "keywords": [
+    "Mutual Exclusion",
+    "non-shareable"
+   ]
+  },
+  {
+   "id": "Q24",
+   "question": "How are deadlocks handled?",
+   "section": "Deadlock Handling Strategies",
+   "keywords": [
+    "Prevention",
+    "avoidance"
+   ]
+  },
+  {
+   "id": "Q25",
+   "question": "What is the difference between logical and physical address?",
+   "section": "Logical vs. Physical Address Space",
+   "keywords": [
+    "Logical Address Space",
+    "Virtual Address"
+   ]
+  },
+  {
+   "id": "Q26",
+   "question": "What is paging?",
+   "section": "Memory Allocation Techniques",
+   "keywords": [
+    "Paging",
+    "external fragmentation"
+   ]
+  },
+  {
+   "id": "Q27",
+   "question": "What is demand paging?",
+   "section": "Virtual Memory and Demand Paging",
+   "keywords": [
+    "Virtual memory",
+    "illusion"
+   ]
+  },
+  {
+   "id": "Q28",
+   "question": "What happens when a page fault occurs?",
+   "section": "Page Faults and their Handling",
+   "keywords": [
+    "page fault",
+    "interrupt"
+   ]
+  },
+  {
+   "id": "Q29",
+   "question": "What are page replacement algorithms?",
+   "section": "Page Replacement Algorithms",
+   "keywords": [
+    "page replacement",
+    "page faults"
+   ]
+  },
+  {
+   "id": "Q30",
+   "question": "What is a file system?",
+   "section": "File System Concepts and Components",
+   "keywords": [
+    "logical structure",
+    "files"
+   ]
+  },
+  {
+   "id": "Q31",
+   "question": "What are the directory structures?",
+   "section": "Directory Structures",
+   "keywords": [
+    "metadata",
+    "Directories"
+   ]
+  },
+  {
+   "id": "Q32",
+   "question": "What are the file allocation methods?",
+   "section": "File Allocation Methods",
+   "keywords": [
+    "Contiguous Allocation",
+    "blocks"
+   ]
+  },
+  {
+   "id": "Q33",
+   "question": "What is the kernel I/O subsystem?",
+   "section": "Kernel I/O Subsystem",
+   "keywords": [
+    "unified",
+    "interface"
+   ]
+  },
+  {
+   "id": "Q34",
+   "question": "What is the role of device drivers?",
+   "section": "Device Drivers",
+   "keywords": [
+    "translate",
+    "hardware"
+   ]
+  },
+  {
+   "id": "Q35",
+   "question": "How is I/O performance optimised? Explain buffering.",
+   "section": "I/O Optimization Techniques",
+   "keywords": [
+    "Buffering",
+    "performance"
+   ]
+  },
+  {
+   "id": "Q36",
+   "question": "What is the structure of a disk?",
+   "section": "Disk Structure",
+   "keywords": [
+    "Platters",
+    "Tracks"
+   ]
+  },
+  {
+   "id": "Q37",
+   "question": "What are disk scheduling algorithms and what is seek time?",
+   "section": "Disk Scheduling Algorithms",
+   "keywords": [
+    "seek time",
+    "HDD"
+   ]
+  },
+  {
+   "id": "Q38",
+   "question": "What is disk partitioning?",
+   "section": "Disk Partitioning and Formatting",
+   "keywords": [
+    "partitions",
+    "logically"
+   ]
+  },
+  {
+   "id": "Q39",
+   "question": "What are the RAID levels?",
+   "section": "RAID Levels",
+   "keywords": [
+    "striping",
+    "mirroring"
+   ]
+  },
+  {
+   "id": "Q40",
+   "question": "Why do we need system calls?",
+   "section": "Purpose of System Calls",
+   "keywords": [
+    "Protection",
+    "Abstraction"
+   ]
+  },
+  {
+   "id": "Q41",
+   "question": "How does a system call work?",
+   "section": "Mechanism of System Calls",
+   "keywords": [
+    "user mode",
+    "kernel mode"
+   ]
+  }
+ ],
+ "followups": [
+  {
+   "id": "F1",
+   "name": "Scheduling follow-ups",
+   "turns": [
+    {
+     "message": "Explain CPU scheduling",
+     "section": "CPU Scheduling"
+    },
+    {
+     "message": "What are its advantages?",
+     "section": "CPU Scheduling"
+    },
+    {
+     "message": "Give an example",
+     "section": "CPU Scheduling"
+    },
+    {
+     "message": "I don't understand it.",
+     "section": "CPU Scheduling"
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "name": "Deadlock follow-ups",
+   "turns": [
+    {
+     "message": "Explain deadlocks",
+     "section": "Deadlocks"
+    },
+    {
+     "message": "How can it be prevented?",
+     "section": "Deadlocks"
+    },
+    {
+     "message": "What are its necessary conditions?",
+     "section": "Deadlocks"
+    }
+   ]
+  },
+  {
+   "id": "F3",
+   "name": "Topic change",
+   "turns": [
+    {
+     "message": "What is paging?",
+     "section": "Memory Management"
+    },
+    {
+     "message": "What are its advantages?",
+     "section": "Memory Management"
+    },
+    {
+     "message": "Now explain the RAID levels",
+     "section": "Disk Management"
+    }
+   ]
+  },
+  {
+   "id": "F4",
+   "name": "Confusion about memory",
+   "turns": [
+    {
+     "message": "Explain virtual memory",
+     "section": "Memory Management"
+    },
+    {
+     "message": "I don't understand it.",
+     "section": "Memory Management"
+    }
+   ]
+  }
+ ],
+ "out_of_scope": [
+  {
+   "id": "O01",
+   "question": "Explain quantum chromodynamics and gluon confinement"
+  },
+  {
+   "id": "O02",
+   "question": "How do I bake sourdough bread at home?"
+  },
+  {
+   "id": "O03",
+   "question": "Who won the 2018 football world cup?"
+  },
+  {
+   "id": "O04",
+   "question": "Explain blockchain consensus mechanisms"
+  },
+  {
+   "id": "O05",
+   "question": "How do I configure a Kubernetes ingress controller?"
+  },
+  {
+   "id": "O06",
+   "question": "Describe the light reactions of photosynthesis"
+  },
+  {
+   "id": "O07",
+   "question": "What are Python decorators?"
+  },
+  {
+   "id": "O08",
+   "question": "What are the tax rules for freelancers?"
+  },
+  {
+   "id": "O09",
+   "question": "Summarise the history of the Roman empire"
+  },
+  {
+   "id": "O10",
+   "question": "How does GraphQL schema stitching work?"
+  }
+ ]
+}

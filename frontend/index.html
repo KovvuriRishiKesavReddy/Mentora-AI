@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MentoraAI</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="icon-btn menu-btn" id="menu-btn" onclick="toggleMenu()" title="Menu" aria-label="Menu">☰</button>
+  <h1>🎓 MentoraAI</h1>
+  <div class="mood-orb" id="mood-orb"></div>
+  <span class="mood-label-top" id="mood-label-top">Detecting mood…</span>
+  <button class="tab-btn active" id="tab-chat"      onclick="switchTab('chat')">💬 Chat</button>
+  <button class="tab-btn"        id="tab-quiz"      onclick="switchTab('quiz')">📝 Quiz</button>
+  <button class="tab-btn"        id="tab-study"     onclick="switchTab('study')">📚 Study</button>
+  <button class="tab-btn"        id="tab-plan"      onclick="switchTab('plan')">🗓 Plan</button>
+  <button class="tab-btn"        id="tab-analytics" onclick="switchTab('analytics')">📊 Analytics</button>
+  <button class="tab-btn new-chat-btn" onclick="startNewChat()" title="Start new chat session">🔄 New Chat</button>
+  <button class="tab-btn theme-btn" id="theme-btn" onclick="toggleTheme()" title="Switch light / dark theme">🌙</button>
+  <span class="session-badge" id="session-badge">Session: —</span>
+  <div class="offline-banner" id="offline-banner" style="display:none">⚠ Backend not reachable — start it with start.bat</div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+
+    <div class="sidebar-section">
+      <h3>📁 Upload Notes</h3>
+      <div class="upload-zone" id="upload-zone"
+           onclick="document.getElementById('file-input').click()"
+           ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave()">
+        <div class="upload-icon">📄</div>
+        <div>Drop PDF, DOCX, or TXT</div>
+        <div style="font-size:11px;margin-top:4px;color:var(--text2)">or click to browse</div>
+        <input type="file" id="file-input" accept=".pdf,.docx,.txt" onchange="uploadFile(this.files[0])"/>
+      </div>
+      <div class="progress" id="upload-progress" style="display:none"><div class="progress-fill" id="upload-progress-fill"></div></div>
+      <div id="upload-status" style="font-size:12px;margin-top:8px;color:var(--text2)"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>📚 Indexed Files</h3>
+      <div id="files-list"><div style="font-size:12px;color:var(--text2)">No files yet</div></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>🗂 Previous Chats</h3>
+      <div id="sessions-list"><div style="font-size:12px;color:var(--text2)">No saved chats yet</div></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>⚠️ Topics To Revise</h3>
+      <div id="weak-topics-list"><div style="font-size:12px;color:var(--text2)">Take a quiz to see topics to revise</div></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>🎭 Mood Timeline</h3>
+      <div class="mood-dots" id="mood-dots">
+        <div style="font-size:12px;color:var(--text2)">No mood data yet</div>
+      </div>
+      <div class="mood-legend">
+        <div class="mood-legend-item"><div class="mood-legend-dot" style="background:#d62839"></div>Frustrated</div>
+        <div class="mood-legend-item"><div class="mood-legend-dot" style="background:#f08c00"></div>Confused</div>
+        <div class="mood-legend-item"><div class="mood-legend-dot" style="background:#2f9e44"></div>Confident</div>
+        <div class="mood-legend-item"><div class="mood-legend-dot" style="background:#868e96"></div>Bored</div>
+        <div class="mood-legend-item"><div class="mood-legend-dot" style="background:#1f8a8a"></div>Neutral</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="chat-area">
+
+    <!-- Chat -->
+    <div id="chat-panel">
+      <div class="messages" id="messages">
+        <div class="message assistant">
+          <div class="bubble">
+            👋 Hi! I'm your MentoraAI.<br><br>
+            <strong>To get started:</strong><br>
+            1. Upload your notes (PDF, DOCX, or TXT) in the sidebar<br>
+            2. Ask any question — I'll answer from your notes<br>
+            3. My tone adapts based on how you're feeling<br>
+            4. Use 🔄 <strong>New Chat</strong> to start a fresh session anytime<br><br>
+            You can type, or use the 🎤 mic to speak your question (it is transcribed into the box so you can check it before sending).
+          </div>
+        </div>
+      </div>
+      <div class="input-bar">
+        <div class="input-wrap">
+          <textarea id="msg-input" rows="1" placeholder="Ask a question about your notes…"
+                    oninput="autoResize(this)" onkeydown="handleKeydown(event)"
+                    onkeyup="trackBackspace(event)"></textarea>
+        </div>
+        <button class="icon-btn" id="mic-btn" onclick="toggleRecording()" title="Voice input">🎤</button>
+        <button class="icon-btn send-btn" onclick="sendMessage()" title="Send (Enter)">▶</button>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div id="quiz-panel">
+      <div class="quiz-inner">
+        <div class="quiz-header">
+          <input type="text" class="quiz-input" id="quiz-topic" placeholder="Topic (e.g. 'process scheduling')"/>
+          <select class="quiz-input" id="quiz-type" style="flex:0;min-width:150px;">
+            <option value="mcq">Multiple Choice</option>
+            <option value="short">Short Answer</option>
+            <option value="feynman">Feynman Mode</option>
+          </select>
+          <select class="quiz-input" id="quiz-diff" style="flex:0;min-width:160px;" title="Difficulty">
+            <option value="auto">Auto difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <input type="number" class="quiz-input" id="quiz-num" value="3" min="1" max="5" style="flex:0;width:65px;"/>
+          <button class="quiz-btn" id="gen-btn" onclick="generateQuiz()">Generate Quiz</button>
+        </div>
+        <div id="quiz-content">
+          <div style="color:var(--text2);font-size:14px;line-height:1.7;">
+            Upload your notes, enter a topic and click <strong>Generate Quiz</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Study -->
+    <div id="study-panel">
+      <div class="quiz-inner">
+        <div class="quiz-header">
+          <select class="quiz-input" id="study-doc" style="min-width:220px;" onchange="onStudyDocChange()"></select>
+          <button class="tab-btn study-sub active" id="sub-summary" onclick="studySub('summary')">📝 Summary</button>
+          <button class="tab-btn study-sub" id="sub-cards" onclick="studySub('cards')">🃏 Flashcards</button>
+          <button class="tab-btn study-sub" id="sub-map" onclick="studySub('map')">🧠 Mind map</button>
+        </div>
+        <div id="study-empty" style="color:var(--text2);font-size:14px;">Upload your notes first, then choose them here.</div>
+        <div id="study-summary" class="study-area">
+          <div class="study-actions">
+            <button class="quiz-btn" id="sum-btn" onclick="generateSummary(false)">Summarise the whole notes</button>
+            <button class="tab-btn" id="sum-refresh" style="display:none" onclick="generateSummary(true)">↻ Regenerate</button>
+            <button class="tab-btn" id="sum-dl" style="display:none" onclick="downloadSummary()">⬇ Download (.md)</button>
+          </div>
+          <div id="summary-content"><div style="color:var(--text2);font-size:13px;line-height:1.7;">
+            Creates a chapter-by-chapter summary of the <strong>entire</strong> document plus a short overview and key terms.
+            It is generated once and saved.</div></div>
+        </div>
+        <div id="study-cards" class="study-area" style="display:none">
+          <div class="study-actions">
+            <input type="text" class="quiz-input" id="cards-topic" placeholder="Topic (optional — leave empty to cover the whole document)"/>
+            <input type="number" class="quiz-input" id="cards-count" value="10" min="1" max="20" style="flex:0;width:70px;"/>
+            <button class="quiz-btn" id="cards-btn" onclick="generateCards()">Make flashcards</button>
+          </div>
+          <div id="cards-content"></div>
+        </div>
+        <div id="study-map" class="study-area" style="display:none">
+          <div style="color:var(--text2);font-size:12px;margin-bottom:8px;">Click a chapter to ask the tutor about it · click a section to read it in your notes.</div>
+          <div id="map-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan -->
+    <div id="plan-panel">
+      <div class="quiz-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <h2 style="font-size:18px;font-weight:600;">🗓 Revision Plan</h2>
+          <button class="quiz-btn" onclick="loadPlan()" style="padding:8px 16px;font-size:13px;">Refresh</button>
+        </div>
+        <div style="color:var(--text2);font-size:12px;margin-bottom:14px;">Built from your graded quiz answers and the times you said "I don't understand" — with spaced-repetition timing.</div>
+        <div id="plan-content"></div>
+      </div>
+    </div>
+
+    <!-- Analytics -->
+    <div id="analytics-panel">
+      <div class="quiz-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h2 style="font-size:18px;font-weight:600;">📊 Session Analytics</h2>
+          <button class="quiz-btn" onclick="loadAnalytics()" style="padding:8px 16px;font-size:13px;">Refresh</button>
+        </div>
+        <div id="analytics-content">
+          <div style="color:var(--text2);">Start chatting and taking quizzes to see your analytics here.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    <h3 id="modal-title"></h3>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="study.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
