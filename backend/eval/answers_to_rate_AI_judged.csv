@@ -1,0 +1,784 @@
+﻿id,question,expected_section,grounding,answer,rating
+Q01,What are the core functions of an operating system?,Core Functions,strong,"The core functions of an operating system, as listed in your notes, are:
+
+1. **Memory Management** – Dynamically allocates and deallocates memory for running programs, tracks usage, minimizes fragmentation, and preserves data integrity (Source 1).
+
+2. **Processor Management (CPU Scheduling)** – Decides which ready processes receive CPU time and for how long, aiming to keep the CPU busy and maximize throughput (Source 1).
+
+3. **Device Management** – Uses device drivers to control I/O devices, assigns them to processes, monitors their status, and handles allocation/deallocation as I/O requests complete (Source 1).
+
+4. **File Management** – Provides operations for creating, deleting, moving, and saving files and directories, maintaining an organized and safe file system for user and application access (Source 1).
+
+5. **Storage Management** – Organizes files and directories across storage devices, optimizes device utilization, and ensures efficient data retrieval (Source 1).
+
+6. **Security** – Implements access control, user authentication, and data‑encryption mechanisms to protect system integrity and confidentiality (Source 1).
+
+7. **Job Accounting** – Tracks and records resource consumption by users or processes, useful for billing, allocation analysis, or performance auditing (Source 1).
+
+8. **Error Detection** – Continuously monitors the system for errors or threats, helping preserve stability and alerting users to problems (Source 1).
+
+9. **Performance Monitoring** – Collects data on resource usage, system responsiveness, and errors, enabling administrators to fine‑tune system performance (Source 1).
+
+These functions are tightly interrelated; for example, a process needs CPU time (processor management) and memory (memory management), and any I/O it performs involves device and file management. Inefficiencies in one area can affect the others, so OS design must coordinate all functions holistically.
+
+*Which of these functions would you like to explore in more detail?*",1
+Q02,Explain batch operating systems.,Types of Operating Systems,strong,"**Batch Operating System** – as described in your notes (Source 1)
+
+*Definition*  
+A batch operating system processes jobs in groups (batches) without requiring the user to interact with the computer while a job is running. The OS collects a set of jobs that have similar resource needs, queues them, and then executes them one after another.
+
+*Key characteristics*  
+
+| Aspect | What the notes say |
+|--------|--------------------|
+| **User interaction** | No direct interaction during execution; the user submits jobs, then steps away while the system runs them. |
+| **Job grouping** | Jobs with similar requirements are placed together in a batch, which the OS schedules sequentially. |
+| **Scheduling goal** | Optimizes **throughput** (the number of jobs completed per unit time) rather than response time for any single user. |
+| **Typical environment** | Early main‑frame computers where hardware was scarce and expensive, so maximizing utilization was more important than interactive use. |
+| **Historical context** | The earliest OS type; its design reflects the limited resources and the lack of need for interactive user experience at the time (Source 1). |
+
+*Advantages*  
+
+- High overall system utilization because the CPU can be kept busy with back‑to‑back jobs.  
+- Simple scheduling logic; the OS can run jobs in the order they arrive or based on batch priorities.  
+
+*Disadvantages* (implied from the focus on throughput over interactivity)  
+
+- Poor interactive response; users must wait until their entire batch finishes before seeing results.  
+- Inefficient for workloads that require immediate feedback or real‑time processing.
+
+*Examples*  
+The notes do not list a specific modern example; batch systems are primarily of historical interest, though modern “batch processing” (e.g., scheduled jobs on Unix/Linux) inherits the same principle.
+
+---
+
+**Brief check:** Does this cover what you needed, or would you like more detail on how batch scheduling is implemented (e.g., spooling, job control language) or its evolution into modern batch‑job frameworks?",1
+Q03,What is a monolithic kernel?,Monolithic Kernel,strong,"A monolithic kernel is an operating‑system architecture in which **the entire OS—including core services such as process management, memory management, file systems, and device drivers—is implemented as a single, large block of code that runs entirely in privileged kernel mode**【Source 1】.  
+
+**Key characteristics**  
+- All kernel components share the same address space, so they can interact directly without needing complex inter‑process communication【Source 1】.  
+- The kernel is compiled and linked as one unified binary, simplifying the build process【Source 1】.
+
+**Advantages**  
+- **Speed and performance**: Direct communication between tightly integrated components and few interfaces to hardware give high execution efficiency【Source 1】.  
+- **Development simplicity**: Because everything resides in one code block, initial construction and compilation are relatively straightforward【Source 1】.
+
+**Disadvantages**  
+- **Single point of failure**: A bug in any component can crash the whole system, since all parts are tightly coupled【Source 1】.  
+- **Poor modularity**: Maintenance, debugging, and adding new functionality are difficult; changes in one area may have unintended effects elsewhere【Source 1】.  
+- **Higher security risk**: Compromise of any kernel component grants access to all kernel data and functions【Source 1】.
+
+*Would you like to see how a hybrid kernel tries to address some of these drawbacks?*",1
+Q04,How does a microkernel work?,Microkernel,strong,"A microkernel keeps only the **absolutely essential OS functions inside the kernel itself**.  
+According to your notes (Source 1):
+
+1. **Core services in kernel space** – The microkernel provides a very small set of primitives, chiefly  
+   * inter‑process communication (IPC) mechanisms, and  
+   * basic process scheduling.  
+
+2. **All other services run in user space** – Device drivers, file‑system managers, network stacks, etc., are implemented as separate system or user programs that execute with lower privileges.  
+
+3. **Communication via message passing** – Because the services are isolated from the kernel, they cannot call each other directly. Instead they exchange messages through the kernel’s IPC facility. This indirection is what gives the microkernel its modularity and security, but it also adds latency (Source 1, 5).  
+
+4. **Isolation and fault containment** – If a user‑space service crashes or contains a bug, the failure is confined to that process; the kernel and the rest of the system continue to run (Source 1, 4).  
+
+5. **Portability and testability** – The small, well‑defined code base and clear interfaces make the kernel easier to port to new hardware and to test thoroughly (Source 1, 5).  
+
+In practice, when an application needs a service (e.g., file I/O), it sends a request message to the appropriate user‑space server. The server processes the request, possibly interacting with hardware via its driver, and returns a reply message. The kernel’s scheduler decides when each server and the requesting process run, while the IPC subsystem moves the messages between them.
+
+**Summary of operation**
+
+| Layer | Role |
+|------|------|
+| **Microkernel (kernel space)** | Provides IPC, scheduling, minimal hardware abstraction |
+| **User‑space servers** | Implement drivers, filesystems, networking, etc., using only the kernel’s primitives |
+| **Applications** | Communicate with servers via IPC, never invoke kernel services directly |
+
+This design yields high security and reliability at the cost of some performance overhead due to the extra message‑passing steps (Source 1, 5).
+
+*Would you like an example of how a file‑read request travels through a microkernel system?*",1
+Q05,What is the layered structure of an operating system?,Layered Structure,strong,"**Layered Structure – Definition**  
+A layered operating‑system structure organizes the OS into a strict hierarchy of separate layers. Each layer is built to use only the functions offered by the layer directly beneath it, with the lowest layer (Layer 0) representing the hardware and the highest layer (Layer N) providing the user interface【Source 1】.
+
+**Key Characteristics**  
+- **Hierarchical dependency:** Upper layers depend exclusively on the services of the immediate lower layer.  
+- **Clear interfaces:** Communication occurs only between adjacent layers, enforcing well‑defined boundaries【Source 3】.
+
+**Advantages**  
+1. **Modularity:** The system is broken into independent components, simplifying design, development, and testing.  
+2. **Ease of enhancement:** Individual layers can be updated or replaced without affecting others, as long as their interfaces stay consistent.  
+3. **Simplified debugging:** Faults can often be isolated to a specific layer, making error localization straightforward.  
+4. **Improved maintainability:** The clear separation of concerns aids long‑term upkeep【Source 1】【Source 3】.
+
+**Disadvantages**  
+1. **Performance overhead:** Every request or system call must pass through multiple layers, adding processing time and potentially slowing execution.  
+2. **Rigid boundaries:** Communication between non‑adjacent layers can be difficult or inefficient, sometimes requiring work‑arounds.  
+3. **Complex design requirements:** Planning a correct set of dependencies and interfaces for all layers demands careful, meticulous design【Source 1】【Source 3】.
+
+**Typical Example**  
+UNIX is frequently cited as an operating system that follows a layered structure【Source 1】【Source 3】.
+
+---
+
+*Would you like to see how the layered approach compares to other OS structures such as microkernels or hybrid kernels?*",1
+Q06,What is a hybrid kernel?,Hybrid Kernel,strong,"A hybrid kernel is an operating‑system architecture that tries to combine the best traits of monolithic and microkernel designs. It keeps the most performance‑critical services (e.g., core scheduling, low‑level memory management) inside kernel space for speed, while moving many other functions to user space as loadable modules that can be added or removed dynamically (Source 1).
+
+**Key characteristics from your notes**
+
+| Aspect | What the notes say |
+|--------|--------------------|
+| **Design goal** | Balance the high performance of monolithic kernels with the modularity and stability of microkernels. |
+| **Service placement** | Critical services stay in kernel space; less‑critical services run in user space as separate modules. |
+| **Advantages** | • Good performance‑modularity trade‑off.<br>• Broad hardware and application compatibility.<br>• Better isolation and security than a pure monolithic kernel.<br>• Improved reliability and easier debugging/maintenance because many components are isolated. |
+| **Disadvantages** | • Higher overall system complexity because two architectural paradigms are merged.<br>• The kernel‑user communication layer, though lighter than in a pure microkernel, still adds some performance overhead compared with a fully monolithic design. |
+
+In short, a hybrid kernel seeks to give you “the speed of a monolith with the safety and flexibility of a microkernel,” but it does so at the cost of added architectural complexity.
+
+**Extension question:** Can you think of a real operating system that uses a hybrid kernel and identify which components are kept in kernel space versus user space?",1
+Q07,What is an exokernel?,Exokernel,strong,"An **exokernel** is a minimalist operating‑system kernel that deliberately avoids imposing high‑level abstractions on applications.  
+
+* **Core idea** – It separates *resource management* from *protection*, exposing low‑level hardware primitives directly to user‑space programs so that each application can implement its own management policies (e.g., custom memory allocators) rather than using the OS‑provided “forced abstractions” (Source 1).  
+* **Benefits** – By giving applications direct control over hardware, an exokernel can improve performance and allow fine‑grained optimization tailored to each program’s needs (e.g., custom memory management) (Source 1).  
+* **Challenges** – The model shifts much of the complexity to application developers: interfaces are more intricate, consistency across programs can suffer, and developers must handle low‑level resource details that conventional OSes normally hide (Source 1, Source 2).  
+
+In short, an exokernel is a very thin kernel that provides protection but leaves resource allocation and management to the applications themselves.  
+
+*Would you like to see how an exokernel compares to monolithic or microkernel designs?*",1
+Q08,What is a virtual machine?,Virtual Machines,strong,"A **virtual machine (VM)** is an abstraction layer that turns a physical computer’s hardware—CPU, RAM, disk, NICs, etc.—into several isolated, independent “mini‑computers.”  
+- **Hypervisor**: The software that sits between the physical hardware and the VMs, allocating resources and managing the isolated environments.  
+- **Isolation**: Each VM behaves as if it were a separate machine; a crash or compromise in one VM normally does not affect the others.  
+
+**Key advantages**  
+- Enhanced security and stability through isolation.  
+- High scalability: VMs can be rapidly created or destroyed to match workload demands.  
+- Cost reduction by consolidating many virtual systems on a single physical host.  
+
+**Key disadvantages**  
+- Management complexity, especially for users unfamiliar with hardware and networking.  
+- All VMs share the same underlying physical hardware; a failure in that hardware can affect every VM on the host.  
+
+These points come directly from your notes (Source 1).",1
+Q09,What is a process?,Processes and Threads,strong,"A **process** is an *instance of a program in execution*—the operating system’s basic unit of work.  
+When a program is launched, the OS creates a process that receives:
+
+* its **own address space** (so its memory is isolated from other processes)  
+* a **set of resources** such as open files, memory regions, and I/O devices  
+* a **unique execution context** (register state, program counter, stack, etc.)  
+
+This isolation guarantees that one process cannot inadvertently affect another’s operation.  
+
+*Sources: 1 (definition of a process as a program in execution) and 3 (details on address space, resources, and execution context).*  
+
+Would you like to see how a process moves through its life‑cycle states?",1
+Q10,What are the states of a process?,Process States,strong,"The notes describe five distinct process states (Source 1):
+
+| State | When it occurs | Key characteristics |
+|-------|----------------|----------------------|
+| **New** | The OS is creating the process. | The process exists only as a data structure; it is not yet ready to run. |
+| **Ready** | All required resources except the CPU have been allocated. | The process is prepared to execute and waits in a ready queue for the CPU scheduler to assign a processor. |
+| **Running** | The scheduler has dispatched the process to a CPU core. | Its instructions are actively being executed; only one process can be running on a given core at a time. |
+| **Waiting** (or **Blocked**) | The process cannot continue until a specific event occurs. | Typical events are completion of I/O, receipt of a signal, or other synchronization conditions. |
+| **Terminated** (or **Exit**) | The process has finished execution or has been aborted. | The OS deallocates all resources and removes the process’s PCB. |
+
+The current state of a process is stored in its **Process Control Block (PCB)**, which the kernel consults during scheduling and context‑switching (Source 3).  
+
+*Extension*: How does the transition from **Waiting** back to **Ready** happen, and which OS component is responsible for that change?",1
+Q11,What does a process control block contain?,Process Control Block,strong,"A Process Control Block (PCB) is the operating system’s data structure that holds every piece of information needed to manage and restore a process. According to your notes (Source 1), a PCB typically contains the following fields:
+
+| Component | What it stores |
+|-----------|----------------|
+| **Process state** | Current status (running, ready, waiting, etc.). |
+| **Program counter** | Address of the next instruction to execute. |
+| **CPU registers** | Full contents of all registers required to resume execution. |
+| **CPU‑scheduling information** | Priority, pointers to scheduling queues, and other data the scheduler uses to decide execution order. |
+| **Memory‑management information** | Details of the process’s memory allocation (e.g., base/limit registers, page tables). |
+| **Accounting information** | Resource‑usage statistics such as CPU time consumed, elapsed wall‑clock time, and any imposed time limits. |
+| **I/O status information** | List of I/O devices allocated to the process and a record of open files. |
+
+The PCB is created when a process is started, kept in protected kernel memory, and deleted when the process terminates.  
+
+*Would you like to see how these fields are used during a context switch?*",1
+Q12,What happens during a context switch?,Context Switching,strong,"During a context switch the operating system temporarily stops the CPU’s execution of the currently running process (or thread) and starts executing a different one.  The switch proceeds through a well‑defined sequence — all of which is described in **Source 1**:
+
+1. **Save the outgoing process’s state**  
+   * The kernel copies everything that defines the current execution context into the process’s **Process Control Block (PCB)**.  
+   * This includes all CPU registers (general‑purpose registers, stack pointer, program counter, status flags, etc.) and any other architectural state that the OS tracks.
+
+2. **Load the incoming process’s state**  
+   * The PCB of the process that is about to run is read, and its saved register values are written back into the CPU.  
+   * The program counter, stack pointer, and other registers are restored so the new process can resume exactly where it left off.
+
+3. **Resume execution**  
+   * After the registers are restored, the CPU begins fetching and executing instructions of the newly loaded process.
+
+Because the CPU is doing only administrative work during these steps, the time spent is **pure overhead**—no user‑level computation progresses.  The length of the overhead depends on:
+
+* **PCB complexity** – a richer PCB (more saved fields) means more data to copy, increasing the switch time.  
+* **Hardware support** – CPUs that provide multiple register sets can swap whole contexts faster, reducing the overhead (Source 1).
+
+The overhead of a context switch is a key factor in overall system performance and influences scheduler design; algorithms that cause fewer switches (e.g., non‑preemptive scheduling) may be preferred for certain workloads.
+
+*Contrast:* A system‑call entry/exit only changes the **privilege level** (user ↔ kernel mode) without saving/restoring another process’s PCB; that is a **mode switch**, not a full context switch (Source 2).
+
+---
+
+**Quick check:** Can you think of a situation where minimizing context‑switch overhead would be especially important?",1
+Q13,What are the CPU scheduling criteria?,Scheduling Criteria,strong,"The scheduling criteria described in your notes are (Source 1):
+
+| Criterion | What it measures / goal |
+|-----------|--------------------------|
+| **CPU Utilization** | Maximize the fraction of time the CPU is busy (minimize idle periods). |
+| **Throughput** | Maximize the number of processes completed per unit time. |
+| **Turnaround Time** | Minimize the total elapsed time from a process’s arrival in RAM to its completion (including waiting, execution, and I/O). |
+| **Waiting Time** | Minimize the total time a process spends in the ready queue awaiting CPU service (excludes execution and I/O). |
+| **Response Time** | Minimize the interval from a process’s arrival to its first allocation of the CPU – critical for interactive systems. |
+
+These criteria are used to evaluate and compare different scheduling algorithms.
+
+**Extension question:**  
+If an interactive system prioritizes response time over throughput, which scheduling algorithm(s) from your notes would likely be most appropriate, and why?",1
+Q14,What is FCFS scheduling?,First Come First Served,strong,"**First‑Come‑First‑Served (FCFS) scheduling**
+
+**CPU scheduling (Source 1)**
+- **Definition** – The simplest non‑preemptive algorithm. Processes that enter the ready queue are given the CPU in the exact order of their arrival; the earliest arrival runs first.
+- **Key characteristics**
+  - Non‑preemptive: once a process starts, it runs to completion (or blocks for I/O) before the next one is selected.
+  - No priority or burst‑time considerations; only arrival time matters.
+- **Advantages**
+  - Extremely easy to implement.
+  - Fair in the sense that every process is served in the order it arrived.
+- **Disadvantages**
+  - **Convoy effect** – a long‑running process can hold the CPU for a long time, forcing many shorter processes to wait, which inflates average turnaround and waiting times and reduces overall CPU utilization.
+
+**Disk scheduling (Source 3)**
+- The same principle is applied to I/O requests: the disk controller services requests in the order they arrive.
+- **Advantages**
+  - Straightforward to implement; inherently fair (no starvation).
+- **Disadvantages**
+  - Often yields a high average seek time because the disk head may jump back and forth across the platter, making it inefficient for workloads with many random requests.
+
+---
+
+**Extension question:**  
+If a system experiences many short CPU‑bound jobs mixed with occasional long CPU‑bound jobs, how would the convoy effect of FCFS impact overall throughput compared to a pre‑emptive algorithm like SRTF?",1
+Q15,What is the convoy effect?,First Come First Served,weak,"The **convoy effect** is a scheduling problem that occurs when a long‑running process “holds” the CPU, causing all the shorter processes that arrive after it to wait behind it.  
+- In **FCFS** the algorithm serves jobs strictly by arrival time, so if a large burst arrives early, every subsequent job—no matter how short—must wait until that large job finishes.  
+- This leads to poor CPU utilisation, low throughput, and high average turnaround and waiting times.  
+
+SJF (and its preemptive variant SRTF) was designed to reduce this effect by giving priority to the shortest jobs first, thereby preventing a long job from blocking a queue of many short jobs. However, SJF can still suffer from starvation of long jobs if short jobs keep arriving.  
+
+**Extension question:** How might a scheduling policy combine the benefits of SJF while protecting long jobs from starvation?",1
+Q16,Explain SJF and SRTF scheduling.,Shortest Job First,strong,"**Shortest Job First (SJF)**  
+- **What it does:** Picks the ready‑process whose *predicted* CPU‑burst time is the smallest and runs it to completion (non‑preemptive).  
+- **Goal:** Reduce average waiting and turnaround times by giving short jobs early access to the CPU.  
+- **Advantages (Source 1):** Improves turnaround and waiting times compared with FCFS.  
+- **Disadvantages (Source 1 & 3):**  
+  * Requires an accurate estimate of each job’s burst length; in practice this must be approximated (e.g., exponential averaging).  
+  * Long‑burst processes can suffer starvation if short jobs keep arriving.  
+
+**Shortest Remaining Time First (SRTF)** – the preemptive form of SJF  
+- **What it does:** While a process is executing, any newly arriving process whose *remaining* burst time is shorter preempts the current one. The CPU always runs the job with the smallest remaining time.  
+- **Goal:** Same as SJF—minimize average waiting/turnaround—but can react to newly arriving short jobs.  
+- **Advantages (Source 1):** Because it is preemptive, it usually yields even better turnaround and waiting times than non‑preemptive SJF.  
+- **Disadvantages (Source 1 & 3):**  
+  * Same prediction problem as SJF; the scheduler must estimate remaining times.  
+  * Even higher risk of starvation for long‑running processes, especially under a steady stream of short arrivals.  
+  * More context switches than SJF, adding overhead.  
+
+**Practical note (Source 3):** Both algorithms are theoretically optimal for minimizing average waiting time, but their reliance on future knowledge makes real‑world implementations approximate at best.  
+
+*Application question:*  
+If a system can only estimate burst times using exponential averaging, how would you modify SRTF to reduce starvation of long‑running processes while still keeping its advantage in average waiting time?",1
+Q17,How does Round Robin scheduling work?,Round Robin,strong,"Round‑Robin (RR) scheduling treats the ready queue like a First‑Come‑First‑Served line, but each process is allowed to run only for a fixed, short interval called the **time quantum (TQ)** or **time slice**【Source 1】.
+
+**How it works**
+
+1. **Arrival** – When a process becomes ready it is appended to the end of the ready queue.  
+2. **Dispatch** – The CPU dispatcher picks the process at the front of the queue and gives it the CPU.  
+3. **Execution** –  
+   * If the process’s remaining CPU burst **≤ TQ**, it finishes before the quantum expires; the CPU is then released immediately to the next process in the queue.  
+   * If the burst **> TQ**, the process is **pre‑empted** when the quantum expires. It is placed at the **end** of the ready queue, preserving its remaining burst time for a later turn.  
+4. **Repeat** – Steps 2‑3 continue cyclically until all processes terminate.
+
+**Impact of the time quantum**
+
+* **Large TQ** – RR behaves almost like FCFS, giving long, uninterrupted runs to processes.  
+* **Small TQ** – Increases the number of context switches, adding overhead and potentially degrading throughput. The choice of TQ therefore balances fairness/response time against overhead【Source 1】.
+
+**Advantages**
+
+* Guarantees **fairness**: every ready process gets a turn, preventing any single process from monopolizing the CPU.  
+* Provides **good response times** for interactive jobs because no process waits longer than one quantum before getting CPU again【Source 1】【Source 2】.
+
+**Disadvantages**
+
+* **Frequent context switches** when TQ is too small, which incurs overhead and can lower overall system performance【Source 1】【Source 2】.
+
+In summary, RR cycles through the ready queue, giving each process a limited CPU slice, then re‑queues it if it still needs more time. The algorithm’s effectiveness hinges on selecting an appropriate time quantum.  
+
+*Would you like to see an example calculation of average waiting time under RR?*",1
+Q18,What is priority based scheduling?,Priority-Based,strong,"**Priority‑based scheduling** assigns each process in the ready queue a numerical priority value. The CPU is always given to the process that has the **highest priority** (i.e., the lowest or highest number, depending on the system’s convention).  
+
+Key points from your notes (Source 1):
+
+| Aspect | Details |
+|--------|---------|
+| **How it works** | Every ready‑queue process carries a priority. The scheduler selects the process with the highest priority for execution. |
+| **Preemptive vs. non‑preemptive** | The algorithm can be implemented either way. In the preemptive version, a newly arriving higher‑priority process can interrupt the currently running one; in the non‑preemptive version, the running process continues until it blocks or finishes. |
+| **Relation to other algorithms** | Shortest Job First (SJF) and Shortest Remaining Time First (SRTF) are special cases of priority scheduling where the priority is implicitly derived from the CPU‑burst length (shorter burst ⇒ higher priority). |
+| **Disadvantage** | **Starvation**: if high‑priority processes keep arriving, low‑priority processes may never get CPU time. |
+| **Mitigation** | **Aging**: gradually increase the priority of a waiting process the longer it stays in the queue, eventually allowing it to run. |
+
+In the broader context of CPU scheduling, the goal of any algorithm—including priority‑based—is to allocate CPU time in a way that meets the system’s performance criteria (throughput, response time, fairness, etc.) (Source 2).
+
+---
+
+*Extension*: How might you choose the priority values in a real system to balance responsiveness for interactive tasks against fairness for background jobs?",1
+Q19,What is the difference between MLQ and MLFQ?,Multilevel Queue,strong,"**Key differences between Multilevel Queue (MLQ) and Multilevel Feedback Queue (MLFQ)**  
+
+| Aspect | Multilevel Queue (MLQ) | Multilevel Feedback Queue (MLFQ) |
+|--------|------------------------|-----------------------------------|
+| **Process placement** | Processes are **statically assigned** to a specific queue when they enter the system (e.g., interactive vs. batch) and remain there. | Processes are **dynamically moved** among queues according to their observed behavior (e.g., CPU‑burst length, waiting time). |
+| **Queue priority** | Queues have a **fixed priority hierarchy**; higher‑priority queues are always serviced before lower‑priority ones. This can cause starvation of lower queues. | Queues also have a priority order, but the scheduler can **promote** a process (aging) or **demote** it (exceeding its time quantum), which helps prevent starvation. |
+| **Flexibility** | Limited – each queue uses its own scheduling algorithm, but the process never changes queues. | Greater – the algorithm can adapt to a process’s characteristics over time, “inferring” whether it is interactive or CPU‑bound. |
+| **Complexity** | Simpler to implement than MLFQ, but still more complex than a single‑queue scheduler because the system must manage several independent queues. | More complex: the scheduler must track process behavior, decide when to move a process up or down, and possibly apply aging. (Source 1) |
+| **Typical use** | Systems where process types are known a priori and can be permanently separated (e.g., dedicated batch and interactive partitions). | General‑purpose systems that need to balance responsiveness and throughput without prior knowledge of process types. |
+
+In short, **MLQ** partitions the ready queue once and keeps processes fixed in their assigned queue, while **MLFQ** allows processes to **move** between queues based on runtime behavior, offering more adaptability but at the cost of higher implementation complexity (Source 1).
+
+---
+
+**Extension question:**  
+If a system uses an MLFQ with three queues (high, medium, low) and a newly created process is initially placed in the high‑priority queue, under what conditions should the scheduler demote it to the medium queue, and how would that affect its response time and fairness?",1
+Q20,What is the critical section problem?,The Critical Section Problem,strong,"The critical section problem is a design challenge in concurrent programming that requires a protocol to control access to shared resources.  
+A **critical section** is a part of a program where shared data (memory, files, global structures, etc.) is accessed or modified. The problem is to guarantee that when one process or thread is executing inside its critical section, no other process can be executing its own critical section at the same time.
+
+A correct solution must satisfy three conditions:
+
+1. **Mutual Exclusion** – If a process \(P_i\) is in its critical section, no other process may be in a critical section simultaneously.  
+2. **Progress** – If no process is in a critical section and some processes want to enter, the choice of the next process to enter cannot be postponed forever.  
+3. **Bounded Waiting** – After a process requests entry, there is a finite upper bound on how many times other processes may enter their critical sections before it gets a chance, preventing starvation.",1
+Q21,What is a semaphore?,Synchronization Tools,strong,"A semaphore is a synchronization primitive that controls access to a shared resource by multiple processes or threads.  
+* It is an integer variable that can only be changed through two **atomic** operations:  
+  * **wait()** (also called **P()** or **down()**) – decrements the semaphore’s value. If the value becomes non‑positive, the calling process is blocked until the value becomes positive again.  
+  * **signal()** (also called **V()** or **up()**) – increments the semaphore’s value and may wake a process that was blocked on a wait().  
+
+Semaphores are used to enforce mutual exclusion or to manage a pool of resources. They come in two main forms:
+
+1. **Counting semaphores** – can hold any integer value, typically representing the number of available resources in a pool.  
+2. **Binary semaphores** – restricted to values 0 or 1 and are often used to enforce mutual exclusion, behaving similarly to mutexes.
+
+The atomicity of wait() and signal() is essential; without it, race conditions could arise.",1
+Q22,Explain the producer consumer bounded buffer problem.,Classical Synchronization Problems,strong,"**Producer‑Consumer (Bounded‑Buffer) Problem – Overview**
+
+The problem models a system with two kinds of processes that share a fixed‑size buffer:
+
+| Role | Action |
+|------|--------|
+| **Producer** | Generates items and places them into the buffer. |
+| **Consumer** | Removes items from the buffer and consumes them. |
+
+The buffer can hold only *N* items (the “bound”). The core synchronization constraints are [Source 1]:
+
+1. **No overflow** – a producer must not insert when the buffer is already full.  
+2. **No underflow** – a consumer must not remove when the buffer is empty.
+
+These constraints prevent *buffer‑overflow* and *buffer‑underflow* conditions that would corrupt data or cause deadlock.
+
+---
+
+### Typical Solution with Counting Semaphores
+
+The classic solution uses three synchronization primitives:
+
+| Semaphore | Initial value | Meaning |
+|-----------|---------------|---------|
+| `empty`   | *N* (number of free slots) | Counts how many empty slots are available. |
+| `full`    | 0 (no filled slots)        | Counts how many items are present. |
+| `mutex`   | 1 (binary)                 | Guarantees mutual exclusion for the critical section that accesses the buffer itself. |
+
+**Producer code (simplified)**  
+
+```c
+while (true) {
+    produce_item();                // generate data (outside critical section)
+    wait(empty);                   // wait for a free slot
+    wait(mutex);                   // enter critical section
+    insert_item_into_buffer();     // place item
+    signal(mutex);                 // leave critical section
+    signal(full);                  // one more filled slot
+}
+```
+
+**Consumer code (simplified)**  
+
+```c
+while (true) {
+    wait(full);                    // wait for an item to be present
+    wait(mutex);                   // enter critical section
+    remove_item_from_buffer();     // take item
+    signal(mutex);                 // leave critical section
+    signal(empty);                 // one more empty slot
+    consume_item();                // process data (outside critical section)
+}
+```
+
+- `empty` blocks producers when the buffer is full; each `signal(empty)` by a consumer frees a slot.  
+- `full` blocks consumers when the buffer is empty; each `signal(full)` by a producer adds an item.  
+- `mutex` ensures that only one process manipulates the buffer at a time, avoiding race conditions.
+
+---
+
+### Relation to Other Synchronization Concepts
+
+- The problem exemplifies **bounded waiting**: after a producer (or consumer) requests access, only a finite number of opposite‑type operations can occur before its request is granted, preventing starvation [Source 3].
+- It serves as a concrete illustration of the **critical‑section problem**—the buffer’s insert/remove operations must be mutually exclusive.
+
+---
+
+**Extension question:**  
+If the system contains *multiple* producers and *multiple* consumers, how would you modify the semaphore initialization or add additional mechanisms to guarantee fairness (prevent any producer or consumer from being starved) while still preserving high throughput?",1
+Q23,What are the four necessary conditions for deadlock?,Necessary Conditions for Deadlock,strong,"The four conditions that must all be true simultaneously for a deadlock to occur are (Source 1):
+
+1. **Mutual Exclusion** – The resource(s) involved cannot be shared; only one process can use a given instance at a time (e.g., a printer or tape drive).
+
+2. **Hold and Wait** – A process is holding at least one resource while it is waiting to acquire additional resources that are currently held by other processes.
+
+3. **No Preemption** – Once a resource has been allocated to a process, the OS cannot forcibly take it away; the process must release it voluntarily.
+
+4. **Circular Wait** – A closed chain of processes exists, where each process in the chain is waiting for a resource held by the next process, forming a circular dependency.
+
+**Extension question:** If you could eliminate just one of these conditions to guarantee deadlock‑free execution, which would you choose and why, considering the trade‑offs in system performance and resource utilization?",1
+Q24,How are deadlocks handled?,Deadlock Handling Strategies,strong,"Deadlocks are dealt with by a four‑step framework that the notes describe: **prevention, avoidance, detection, and recovery**.  
+Each step tackles a different part of the problem, and most operating systems combine several of them.
+
+---
+
+### 1. Prevention  
+*Goal:* Make at least one of the four necessary conditions for a deadlock impossible.
+
+| Condition | Prevention technique (from the notes) | Example |
+|-----------|----------------------------------------|---------|
+| Mutual exclusion | Make resources shareable (e.g., spool print jobs to a queue) | A printer is used via a spooler so processes don’t wait on the physical device |
+| Hold‑and‑wait | Require all resources to be requested at once | A process must ask for every resource it will need before it starts |
+| No preemption | Allow resources to be taken away (preemption) | Not used in prevention; it is a recovery technique |
+| Circular wait | Impose a global ordering on resource acquisition | Processes must request resources in a fixed sequence |
+
+**Trade‑offs** – Prevention can severely reduce resource utilization, increase overhead, and cause starvation (see the notes).  
+
+---
+
+### 2. Avoidance  
+*Goal:* Dynamically avoid entering an unsafe state.
+
+*Banker’s Algorithm* is the classic avoidance method.  
+- Requires knowledge of each process’s **maximum** resource needs ahead of time.  
+- The notes point out that in real, dynamic systems this information is rarely available; processes may not know their full future needs until runtime.  
+- If the declared maximums are wrong, the safety guarantees of the algorithm break down.
+
+Because of this practical limitation, avoidance is rarely used in general‑purpose OSes.
+
+---
+
+### 3. Detection  
+*Goal:* Allow deadlocks to occur, then find them.
+
+- **Wait‑for graph**: For systems with single‑instance resources, build a graph where nodes are processes and edges represent “process A is waiting for a resource held by process B.”  
+- A cycle in this graph indicates a deadlock (source 1).
+
+Detection is typically performed periodically by a special algorithm.
+
+---
+
+### 4. Recovery  
+Once a deadlock is detected, the system must break it. Two main recovery actions are described:
+
+| Action | How it works | Considerations |
+|--------|--------------|----------------|
+| **Process termination** | Kill one or more processes in the deadlocked set. | May terminate all deadlocked processes at once or one by one. Aim to minimize the number of terminated processes and avoid starvation. |
+| **Resource preemption** | Forcefully take resources from a process and give them to another. | Breaks the circular wait. Must ensure system consistency after the transfer. |
+
+Recovery decisions balance **system consistency**, **minimal disruption**, and **preventing repeated starvation**.
+
+---
+
+### Summary
+
+1. **Prevention** – eliminate a necessary condition (costly in practice).  
+2. **Avoidance** – use algorithms like Banker’s (requires future knowledge).  
+3. **Detection** – periodically run a wait‑for‑graph check.  
+4. **Recovery** – terminate processes or preempt resources to break the cycle.
+
+The notes emphasize that while prevention is conceptually clean, it often hurts efficiency; avoidance is theoretically powerful but impractical; detection and recovery are the most common real‑world approaches.",0
+Q25,What is the difference between logical and physical address?,Logical vs. Physical Address Space,strong,"**Difference between logical and physical address (per Source 1)**  
+
+| Aspect | Logical (Virtual) Address | Physical (Real) Address |
+|--------|---------------------------|--------------------------|
+| **Who generates it?** | The CPU produces the address as part of program execution. | The Memory Management Unit (MMU) generates it after translating the logical address. |
+| **What it represents** | The address space a process *perceives* it has; it defines the size of the process as seen by the program. | The actual location in RAM hardware where the data resides. |
+| **Stability** | Can change during a process’s lifetime (e.g., because of paging, relocation) or between different runs of the same program. | Remains constant once assigned; the hardware address does not vary while the system is running. |
+| **Mapping** | Requires a run‑time mapping (page tables, segment tables, etc.) to become a physical address. | No further translation is needed; it is the final address used by the memory circuitry. |
+
+In short, a **logical address** is the CPU‑visible “virtual” address that a program works with, while a **physical address** is the actual hardware address that the MMU resolves the logical address to.
+
+**Extension question:**  
+If a process accesses a logical address that is not currently mapped to any physical frame, what mechanism does the operating system use to handle this situation, and how does it affect the logical‑to‑physical translation?",1
+Q26,What is paging?,Memory Allocation Techniques,strong,"**Paging** is a non‑contiguous memory‑allocation technique used by operating systems to avoid external fragmentation.  
+
+- The process’s logical (virtual) address space is divided into equal‑size blocks called **pages**.  
+- Physical memory is similarly divided into equal‑size blocks called **frames**.  
+- A **page table** is maintained by the OS to map each logical page to the physical frame that currently holds it.  
+
+Thus, a process can be placed in memory even though its pages may reside in scattered frames, and the OS can move pages between frames without changing the process’s logical view. (Source 2)  
+
+*Extension:* How does paging enable demand paging, and what extra steps are required when a needed page is not in memory?",1
+Q27,What is demand paging?,Virtual Memory and Demand Paging,strong,"**Demand paging** is a concrete implementation strategy for virtual memory. Rather than loading an entire process into RAM at start‑up, the operating system brings in each page **only when the process actually accesses it**—hence the “on‑demand” or “lazy loading” behavior【Source 1】.
+
+**Key characteristics (from your notes)**  
+
+| Aspect | Details |
+|--------|---------|
+| **When pages are loaded** | At the moment of first reference (page fault) rather than pre‑loading the whole address space. |
+| **Underlying mechanism** | Relies on the page‑fault handler to locate the needed page on secondary storage, read it into a free frame, update the page table, and resume the process. |
+| **Advantages** | • Saves physical memory by keeping unused pages out of RAM.<br>• Reduces program start‑up latency and initial disk I/O.<br>• Enables sharing of pages (e.g., copy‑on‑write). |
+| **Disadvantages** | • First access to a page incurs extra latency (page‑fault handling).<br>• Access times become variable and less predictable.<br>• Increases the complexity of the OS’s memory‑management subsystem. |
+
+In short, demand paging lets a system run programs larger than physical RAM by loading pages **just in time**, trading some extra latency for significant memory‑usage savings【Source 1】.
+
+*Extension question:* How does the operating system decide which pages to evict when a new page must be loaded (i.e., what page‑replacement policies are commonly used with demand paging)?",1
+Q28,What happens when a page fault occurs?,Page Faults and their Handling,strong,"When a process tries to use a page that isn’t resident in physical memory, the hardware raises a **page‑fault interrupt**. The operating system then follows a fixed sequence (Source 1):
+
+1. **Address validation** – The OS checks that the faulting address lies within the process’s allocated virtual address space. If it is illegal, the process is terminated (e.g., segmentation fault).
+
+2. **Find a frame** –  
+   * If a free physical frame exists, it will be used.  
+   * If no free frame is available, the OS invokes a **page‑replacement algorithm** to pick a *victim* frame. If the victim page is *dirty* (has been modified), its contents are written back to disk before the frame can be reused.
+
+3. **Disk I/O** – The required page is read from secondary storage (swap space) into the selected frame. While this relatively slow I/O occurs, the faulting process is blocked; the CPU is free to schedule another ready process.
+
+4. **Page‑table update** – After the page arrives, the OS updates the process’s page table entry: the physical‑frame number is stored, the “invalid” (or present) bit is set to *valid*, and any other bookkeeping (e.g., reference/dirty bits) is refreshed.
+
+5. **Instruction restart** – The instruction that caused the fault is re‑executed from the beginning, now finding the needed page in memory.
+
+Because the disk access dominates the latency (≈ 8 ms vs. ≈ 200 ns for a normal memory reference), a page fault can be **≈ 40 000× slower** than a regular access. Even a modest fault rate (e.g., 1 per 1 000 accesses) can dramatically raise the effective access time, so operating systems strive to keep the fault rate extremely low (≈ 1 per 400 000 accesses for < 10 % slowdown).
+
+---
+
+**Extension question:**  
+If a process’s working set fits entirely in RAM but the system’s overall memory pressure forces the OS to evict one of its pages, how does the choice of replacement algorithm (e.g., LFU vs. LRU) affect the likelihood of that process experiencing a costly page fault?",1
+Q29,What are page replacement algorithms?,Page Replacement Algorithms,strong,"Page replacement algorithms are the strategies an operating system uses **when a page fault occurs and there are no free frames left in physical memory**. Their goal is to choose which resident page to evict so that the incoming page can be loaded, thereby **minimizing future page faults and reducing disk I/O** (Source 1).
+
+The notes enumerate the most common algorithms, each with its own logic, advantages, and drawbacks:
+
+| Algorithm | Replacement Logic | Key Advantages | Main Disadvantages |
+|-----------|-------------------|----------------|--------------------|
+| **FIFO (First‑In‑First‑Out)** | Evicts the page that has been in memory the longest (the “oldest” page). | Very simple; minimal overhead. | May discard frequently used pages simply because they were loaded early; can give poor performance. |
+| **Optimal** | Removes the page that will not be used for the longest time **in the future**. | Produces the absolute minimum number of page faults. | Impossible to implement in practice because future references are unknown; used only as a benchmark. |
+| **LRU (Least Recently Used)** | Evicts the page whose most recent reference is farthest in the past. | Good approximation of optimal; exploits temporal locality. | Expensive to implement; requires tracking the exact time of last use for every page. |
+| **MRU (Most Recently Used)** | Removes the page that was accessed most recently. | Occasionally useful for workloads where the most recent page is unlikely to be reused soon. | Rarely effective; seldom used in real systems. |
+| **LFU (Least Frequently Used)** | Chooses the page with the lowest access count. | Tries to keep frequently accessed pages resident. | Can be unfair to pages that were heavily used in the past but not recently; tracking frequency adds overhead. |
+| **MFU (Most Frequently Used)** | Evicts the page with the highest access count. | May help in specific workloads where heavily used pages become obsolete quickly. | Generally counter‑intuitive; often increases faults and is rarely employed. |
+
+All of these are **heuristic** approaches—rules of thumb that approximate the unattainable “optimal” behavior based on past usage patterns (Source 1).  
+
+*Extension*: Which of these algorithms do you think would work best for a workload that repeatedly scans a large dataset sequentially, and why?",1
+Q30,What is a file system?,File System Concepts and Components,strong,"A file system is the logical structure that an operating system uses to store, retrieve, and manage files on a storage device. It provides a hierarchical organization of files and directories, making it easier for users and applications to locate and manipulate data.  
+
+Key points from your notes:
+
+* **Purpose** – Bridges the OS and physical storage hardware, enabling create, read, update, and delete operations. (Source 1)  
+* **Hierarchy** – Organizes files in directories, allowing logical grouping and navigation. (Source 2)  
+* **Core components** –  
+  * **Superblock** – Stores metadata about the file system itself (type, size, block size).  
+  * **Inode Table** – Holds per‑file information (ownership, permissions, and pointers to data blocks).  
+  * **Data Blocks** – The actual disk blocks that contain the file’s raw data.  
+  * **Directory Structure** – Implements the hierarchical layout of files and folders. (Source 2)  
+
+Thus, a file system is the combination of these structures and mechanisms that let the OS manage files efficiently on physical media.",1
+Q31,What are the directory structures?,Directory Structures,strong,"**Directory structures** are the ways an operating system organizes directories (which themselves are special files) to store and locate files. Your notes describe three classic structures, each introduced to solve specific problems as computing environments grew more complex.
+
+| Structure | How it works | Main characteristics / advantages | Main drawbacks |
+|-----------|--------------|-----------------------------------|----------------|
+| **Single‑Level Directory** | All files for all users reside in one flat directory. | • Simple to implement.<br>• Only one directory to manage. | • **Naming problem** – two users cannot have files with the same name.<br>• **Grouping problem** – no logical way to organize files; everything is at the same level. (Source 1) |
+| **Two‑Level Directory** | Each user gets a separate top‑level directory; files are stored inside that user’s directory. | • Eliminates the naming conflict – identical filenames can exist in different users’ directories.<br>• Searching within a user’s own directory is efficient. | • Within a user’s directory the layout is still flat, so large personal collections can become hard to manage. (Source 1) |
+| **Tree‑Structured Directory** | Directories are arranged hierarchically, forming a tree with a root directory and any number of sub‑directories at arbitrary depths. | • Supports **grouping capability** – files can be organized into nested categories that mirror human organization.<br>• Efficient searching across the whole system.<br>• Allows both **absolute paths** (from the root) and **relative paths** (from the current working directory). (Source 1) | • Slightly more complex to implement and navigate than flat structures, but the benefits outweigh the cost in modern systems. |
+
+Additional context from the notes:
+
+* Directories are treated as special files that store metadata (attributes, physical location, ownership) and are accessed via file‑management routines. (Source 1)  
+* The directory structure component is one of the core parts of a file system, together with the superblock, inode table, and data blocks. (Source 2)
+
+These three structures illustrate the evolution from a simple flat space to the hierarchical organization that underlies today’s operating systems.  
+
+*Would you like to see how absolute and relative path names are formed in a tree‑structured directory?*",1
+Q32,What are the file allocation methods?,File Allocation Methods,strong,"The notes describe three primary file‑allocation methods:
+
+| Method | Concept (how the file’s blocks are placed) | Advantages | Disadvantages |
+|--------|--------------------------------------------|------------|----------------|
+| **Contiguous Allocation** | A single, continuous set of disk blocks is reserved for the file when it is created. | • Very fast sequential access because all blocks are adjacent.<br>• Efficient for reading large files in order. | • Causes external fragmentation; large free holes become scarce.<br>• File size must be known up front, limiting flexibility.<br>• Requires periodic compaction to reclaim space. | **Source 1** |
+| **Linked Allocation (Non‑contiguous)** | File blocks are scattered anywhere on the disk; each block stores a pointer to the next block in the chain. | • No external fragmentation – any free block can be used.<br>• File size can grow dynamically as new blocks are linked. | • Random access is slow; to reach block *n* the system must follow *n‑1* pointers.<br>• Pointer field consumes extra space in every block.<br>• Loss of a pointer can truncate the rest of the file. | **Source 1** |
+| **Indexed Allocation** | Each file has a dedicated “index block” that holds a list of pointers to all its data blocks (the index may be multi‑level for very large files). | • Fast random access – any block is reachable directly via the index.<br>• Allows non‑contiguous blocks, so space is used efficiently.<br>• Supports both sequential and direct access. | • The index block itself consumes disk space.<br>• Managing one or multiple index blocks adds overhead and complexity, especially for large files. | **Source 1** |
+
+These three methods illustrate the classic trade‑off between access speed and storage efficiency.  
+
+*Which of these methods do you think would suit a workload that mixes large sequential logs with frequent random lookups?*",1
+Q33,What is the kernel I/O subsystem?,Kernel I/O Subsystem,strong,"The kernel I/O subsystem is the core part of the operating system that controls all input‑output activity. It mediates the flow of data between main memory (RAM) and the various I/O peripherals, and it presents a single, simplified interface to applications so they do not need to know the details of each device (Source 1).  
+
+Key responsibilities include:
+
+* **Handling I/O system calls** – it services calls such as `open()`, `read()`, `write()`, and `close()` that applications use to access devices (Source 1).  
+* **Improving performance** – it schedules I/O requests, uses buffering, caching, and spooling, and manages device reservation (Source 1).  
+* **Providing reliability and security** – it implements error handling and enforces security policies to block unauthorized hardware access (Source 1).
+
+In short, the kernel I/O subsystem is the OS component that abstracts hardware, coordinates data movement, and optimizes I/O while protecting the system.  
+
+*Would you like to see how buffering, caching, and spooling specifically contribute to that optimization?*",1
+Q34,What is the role of device drivers?,Device Drivers,strong,"Device drivers are the software layer that lets the operating system (and therefore applications) talk to hardware. Their role can be broken down into several key functions that appear throughout your notes:
+
+1. **Translation of I/O requests** – Drivers receive generic system calls such as `read()` or `write()` and convert them into the low‑level commands that a specific device (printer, network card, disk, etc.) understands. (Source 1)
+
+2. **Hardware abstraction** – By exposing a uniform API, drivers hide the intricate, device‑specific details from applications. This lets programmers write code once and run it on many different hardware configurations. (Source 1)
+
+3. **Modularity and dynamic support** – Because drivers are separate modules loaded into the kernel, new hardware can be added or removed without rebooting the whole system. (Source 1)
+
+4. **System stability and security** – All hardware access is funneled through privileged driver code. This prevents user programs from manipulating devices directly, reducing crashes and security breaches. (Source 1)
+
+5. **Portability** – Software that uses the standardized driver API can operate across diverse hardware platforms; the driver handles the hardware‑specific nuances. (Source 1)
+
+6. **Support for device management** – In the OS’s broader device‑management function, drivers are the “specialized software components” that assign devices to processes, monitor their status, and manage allocation/deallocation as I/O operations complete. (Source 2)
+
+Together, these responsibilities make drivers the essential bridge between the abstract world of the OS and the concrete reality of physical devices, enabling a flexible, secure, and portable computing environment.
+
+*Would you like an example of how a particular driver (e.g., a disk driver) implements these roles?*",1
+Q35,How is I/O performance optimised? Explain buffering.,I/O Optimization Techniques,strong,"I/O performance is improved through a set of OS‑level techniques that hide or reduce the latency of slow devices, especially mechanical disks. The kernel’s I/O subsystem combines several complementary mechanisms:
+
+| Technique | What it does | Why it helps |
+|-----------|--------------|--------------|
+| **Buffering** | Stores data temporarily in a memory buffer while it is being transferred between a producer and a consumer (e.g., between an application and a disk). | Bridges speed gaps, smooths mismatched data‑transfer rates, accommodates different block sizes, and supports copy‑semantics for application I/O. (Source 1) |
+| **Caching** | Keeps copies of frequently accessed data in fast RAM. | Exploits locality of reference so the system can avoid repeated slow disk reads. (Source 1) |
+| **Spooling** | A specialized form of buffering that writes output (e.g., printer jobs) to a disk file before the device consumes it. | Allows multiple programs to “print” concurrently; the printer receives a single sequential stream, turning a dedicated device into a virtual shared one. (Source 1) |
+| **I/O Scheduling** | Orders and merges pending I/O requests (e.g., FCFS, SSTF, SCAN, C‑SCAN). | Reduces mechanical seek time and rotational latency on HDDs, improving overall throughput. (Source 1) |
+
+### Buffering in detail
+- **Definition** – Buffering is the temporary placement of data in a designated memory area while it moves between two endpoints (device‑to‑device, device‑to‑application, or vice‑versa).  
+- **Primary purposes**  
+  1. **Speed mismatch handling** – Faster components (CPU, RAM) can continue working while a slower device (disk, network interface) catches up.  
+  2. **Transport‑size adaptation** – Buffers can accumulate small writes into larger blocks that match the device’s optimal transfer size, or break large reads into chunks the consumer can process.  
+  3. **Copy semantics** – Applications often expect that the data they read or write is a private copy; the OS uses a buffer to satisfy this without exposing the underlying hardware directly.  
+- **Operation** – When an application issues a read, the kernel may fetch a whole block from disk into a buffer, then deliver the requested portion to the process. For a write, the kernel stores the data in a buffer and schedules the actual disk write later, allowing the application to proceed immediately.  
+- **Effect on performance** – By decoupling the timing of the producer and consumer, buffering reduces the amount of time the CPU or a high‑speed process must wait for a slow I/O operation, thereby increasing overall system responsiveness and throughput.
+
+Together with caching, spooling, and scheduling, buffering forms a core part of the OS’s multi‑layered I/O optimisation strategy (Source 1).  
+
+*Would you like an example of how a buffer is used in a specific system call, such as `read()`?*",1
+Q36,What is the structure of a disk?,Disk Structure,strong,"**Disk structure (as described in your notes)**  
+
+1. **Platters** – Rigid, circular disks coated with magnetic material. A hard‑drive usually contains several platters stacked on a central spindle.【Source 1】
+
+2. **Tracks** – On each surface of a platter the data is organized into thin, concentric circular bands called tracks. Tracks are logical constructs defined during low‑level formatting; numbering starts at 0 on the outermost edge.【Source 1】
+
+3. **Sectors** – Each track is subdivided into arc‑shaped sectors. A sector is the smallest physical storage unit; typical sizes are 512 bytes or 4096 bytes and each sector also carries header/trailer information for identification and error detection.【Source 1】
+
+4. **Cylinders** – A cylinder is the set of tracks that lie at the same radial distance from the disk centre on all platters. When the read/write head is positioned over a particular track on one platter, the heads over the other platters are automatically aligned over the corresponding tracks, forming a cylinder of tracks.【Source 1】
+
+5. **Capacity variation** – Because outer tracks have a larger circumference, they can contain more sectors than inner tracks.【Source 1】
+
+These four elements (platters → tracks → sectors, with cylinders linking tracks across platters) constitute the physical layout of a hard‑disk drive.
+
+---
+
+**Extension question:**  
+How does the fact that outer tracks hold more sectors than inner tracks influence the design of disk‑scheduling algorithms such as SCAN or C‑LOOK?",1
+Q37,What are disk scheduling algorithms and what is seek time?,Disk Scheduling Algorithms,strong,"**Disk scheduling algorithms** are the set of policies an operating system uses to decide **the order in which pending disk I/O requests are serviced**.  
+Their main purpose is to arrange those requests so that the mechanical movements of a hard‑disk drive (HDD) are minimized, thereby reducing the overall time the disk spends servicing I/O. The algorithms work by examining the current position of the read/write head and the pending request queue, then selecting the next request according to a specific rule set【Source 1†L1-L9】.  
+
+Typical algorithms mentioned in your notes are:
+
+| Algorithm | How it chooses the next request | Key characteristics |
+|-----------|--------------------------------|----------------------|
+| **FCFS (First‑Come, First‑Served)** | Serves requests strictly in arrival order. | Simple, fair (no starvation), but often yields high average seek time because head moves arbitrarily【Source 1†L10-L13】. |
+| **SSTF (Shortest Seek Time First)** | Picks the request closest to the current head position. | Reduces immediate seek distance, giving lower average seek time; can starve far‑away requests【Source 1†L14-L17】. |
+| **SCAN (Elevator)** | Moves the head in one direction, servicing all requests encountered, then reverses at the disk’s end. | Provides more predictable service order; still may travel to the physical edge even if no request is there. |
+| **C‑SCAN (Circular SCAN)** | Like SCAN but, after reaching the end, the head quickly returns to the start without servicing requests on the return. | Gives more uniform wait times because every request sees the same “scan” distance. |
+| **LOOK / C‑LOOK** | Variants of SCAN and C‑SCAN that reverse direction (or jump back) **as soon as the last request in the current direction has been served**, avoiding travel to the disk’s extreme edge. | Saves unnecessary movement, further lowering seek overhead. |
+| **NOOP (No‑Operation)** – mentioned for SSDs | Does essentially nothing; just queues requests in order. | Sufficient for solid‑state drives where mechanical delays are absent. |
+
+These algorithms were designed for HDDs because **the dominant performance bottleneck on such devices is the time spent moving the read/write heads**. For solid‑state drives (SSDs) the notes point out that scheduling is far less critical, so simple schemes like NOOP are typically enough【Source 1†L24-L30】.
+
+---
+
+**Seek time** is the **duration required for the disk’s actuator arm to move the read/write heads from their current track to the track that contains the requested data**【Source 1†L1-L4】【Source 2†L1-L3】. It is one of the two main mechanical delays in an HDD (the other being rotational latency). Because the heads must physically travel across the platter surface, minimizing seek time has a direct impact on overall I/O latency and throughput.
+
+---
+
+*Extension:* How might the choice of a disk scheduling algorithm affect the average response time for a workload that issues many requests clustered on a few adjacent tracks?",1
+Q38,What is disk partitioning?,Disk Partitioning and Formatting,strong,"Disk partitioning is the logical division of a single physical disk into multiple independent sections called **partitions**. Each partition acts as a separate storage unit that the operating system can treat as an individual disk.  
+
+Key points from your notes:
+
+- **Purpose** – It lets you organize data more effectively, isolate different kinds of data (e.g., keep the operating system separate from user files), and support multiple operating systems on the same disk (dual‑booting).  
+- **Management benefits** – By having distinct partitions you can apply different backup strategies, file‑system features, or security settings to each area.  
+- **Context** – Partitioning is one of the core functions of disk management, alongside formatting, scheduling, and RAID (Source 2).  
+
+In short, partitioning prepares a physical disk for flexible, organized use by carving it into separate logical volumes.  
+
+*Would you like to see how formatting follows partitioning, or examples of common partition schemes?*",1
+Q39,What are the RAID levels?,RAID Levels,strong,"**RAID levels described in your notes**
+
+| RAID level | Technique (how data is organized) | Minimum number of disks | Advantages (per Source 1) | Disadvantages (per Source 1) |
+|------------|-----------------------------------|------------------------|---------------------------|------------------------------|
+| **RAID 0** | Striping – data is split into “stripes” and written across all disks | 2 | • Extremely fast read & write performance because all disks work in parallel.<br>• Maximises usable capacity (no overhead). | • **No fault tolerance** – a single‑disk failure makes the whole array unreadable.<br>• Not suitable for mission‑critical data. |
+| **RAID 1** | Mirroring – each piece of data is written to two (or more) disks simultaneously | 2 | • High reliability; the array continues operating after one drive fails.<br>• Good read performance (can read from either copy). | • **High storage overhead** – usable capacity is halved because data is duplicated.<br>• Write speed limited by the slower of the mirrored disks. |
+| **RAID 5** | Striping with distributed parity – data and parity blocks are spread across all disks | 3 | • Good balance of performance, capacity efficiency, and fault tolerance.<br>• Can recover from a single‑disk failure without data loss.<br>• Fast reads. | • Write operations are slower due to parity calculation and extra writes.<br>• Rebuild after a failure can be time‑consuming; a second failure during rebuild causes data loss. |
+| **RAID 6** | Striping with double parity – two independent parity blocks are distributed across the disks | 4 | • Higher fault tolerance than RAID 5 – can survive **any two** simultaneous disk failures. | • More storage overhead (two parity blocks).<br>• Slower writes than RAID 5 because of the extra parity calculations. |
+| **RAID 10** (RAID 1+0) | Combination of mirroring and striping – data is striped across mirrored pairs | 4 | • High performance (from striping) **and** high fault tolerance (from mirroring).<br>• Can sustain multiple drive failures as long as the failed drives are not in the same mirrored pair. | • Very high storage overhead – half of the raw capacity is used for mirroring. |
+
+These are the “most common” RAID levels highlighted in your notes (Source 1).  
+
+*Extension:* Which of these levels would you choose for a database that needs both fast writes and protection against a single‑disk failure, and why?",0.5
+Q40,Why do we need system calls?,Purpose of System Calls,strong,"System calls exist because user‑level programs cannot (and must not) perform many of the operations the operating system is responsible for. The notes list several concrete reasons:
+
+| Reason | What it means | How system calls satisfy it |
+|--------|---------------|----------------------------|
+| **Protection** | Prevents untrusted code from touching hardware or privileged data directly. | The kernel checks the request and only grants access if the calling process has the right permissions, stopping accidental or malicious corruption of memory or devices. *(Source 1)* |
+| **Abstraction** | Gives programs a stable API that hides hardware differences. | A program calls, for example, `read()` without needing to know whether the data comes from a disk, a network card, or a virtual device; the kernel translates the request to the appropriate hardware operation. *(Source 1)* |
+| **Multiplexing** | Allows many processes to share limited resources safely (CPU, memory, I/O). | The kernel arbitrates access, ensuring that one process cannot monopolize a device or memory region. *(Source 1)* |
+| **Security** | Enforces access control and permissions on files, devices, etc. | Before performing the operation, the kernel verifies the caller’s credentials (user ID, group ID, capability bits). *(Source 1)* |
+| **Controlled interface** | Provides a well‑defined bridge between user space and kernel space. | System calls are the only sanctioned way for user programs to request services such as process creation, memory allocation, or file manipulation. *(Source 2)* |
+| **Privilege transition** | Moves execution from limited user mode to full‑privilege kernel mode only when needed. | The CPU switches rings (e.g., Ring 3 → Ring 0) via a software interrupt or `syscall` instruction, executes the kernel routine, then returns to user mode. This keeps the kernel’s powerful capabilities out of reach of ordinary code. *(Source 3)* |
+
+In short, system calls are the mechanism that lets applications obtain the services they need while preserving system stability, security, and portability.
+
+*Extension*: Can you think of a situation where a program might try to bypass a system call, and what problems that could cause?",1
+Q41,How does a system call work?,Mechanism of System Calls,strong,"A system call is the controlled way a user‑level program asks the operating‑system kernel to perform a privileged service (e.g., file I/O, memory allocation, process control).
+
+**1. Where the call originates**  
+- The program runs in **user space** (Ring 3 on x86), which cannot directly touch hardware or kernel data structures (Source 2).
+
+**2. Triggering the call**  
+- The program places the desired **system‑call number** (and its arguments) in predefined registers or on the stack, then executes a special instruction such as `syscall` (x86‑64) or raises a software interrupt.  
+- This instruction forces the CPU to switch from **user mode to kernel mode** (a *privilege level* or *mode* switch) (Source 2).
+
+**3. Kernel entry**  
+- The CPU jumps to a fixed entry point in the kernel.  
+- The kernel’s system‑call dispatcher reads the call number, looks up the corresponding kernel routine, and invokes it with the supplied arguments.
+
+**4. Performing the service**  
+- The kernel routine carries out the requested operation—e.g., accessing hardware, manipulating the file system, allocating memory—while having full access to protected resources (Source 1).
+
+**5. Returning the result**  
+- After the kernel routine finishes, it places a return value (or error code) in a register, restores the previous privilege level, and the CPU resumes execution of the user program in **user mode** (Source 2).
+
+**6. Mode switch vs. context switch**  
+- The above sequence is a **mode switch** only: the same process’s registers and address space stay intact.  
+- A **full context switch** (saving/restoring registers, stack pointers, page tables, etc.) occurs only when the scheduler decides to run a different process or thread, which is more expensive (Source 2).
+
+**Why this mechanism exists** (purpose)  
+- **Protection:** prevents untrusted code from directly accessing hardware or kernel memory.  
+- **Abstraction:** offers a uniform API regardless of hardware.  
+- **Multiplexing:** lets many processes safely share CPU, memory, and I/O resources.  
+- **Security:** enforces permissions and access control for files and devices (Source 3).
+
+In short, a system call moves execution from user space to kernel space via a privileged instruction, lets the kernel perform the requested service, then returns control (and any result) back to the user program.
+
+*Would you like an example of a specific system call, such as `read()` or `fork()`, and how its arguments flow through this mechanism?*",1
